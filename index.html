@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+   <head>
+      <title>HTML Tables</title>
+   </head>
+	
+   <body>
+      <table border = "1">
+         <tr>
+            <td>Row 1, Column 1</td>
+            <td>Row 1, Column 2</td>
+         </tr>
+         
+         <tr>
+            <td>Row 2, Column 1</td>
+            <td>Row 2, Column 2</td>
+         </tr>
+      </table>
+      
+   <script type="text/javascript">
+        // I will use fake api from jsonplaceholder website
+        // this return 100 posts 
+        fetch("https://54.237.220.142:8080/api/datas/")
+        .then( response => response.json())
+        .then(
+            // handle the result
+            (result) => {
+                this.setState({
+                    isLoaded : true,
+                    posts : result
+                });
+            },
+            // Handle error 
+            (error) => {
+                this.setState({
+                    isLoaded: true,
+                    error
+                })
+            },
+        )
+   </script>
+   </body>
+</html>

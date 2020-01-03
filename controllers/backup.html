@@ -1,0 +1,118 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Smart Hyco</title>
+  <!-- materialize icons, css & js -->
+  <link type="text/css" href="/css/materialize.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link type="text/css" href="/css/styles.css" rel="stylesheet">
+  <script type="text/javascript" src="/js/materialize.min.js"></script>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/img/icons/icon-96x96.png">
+  <meta name="apple-mobile-web-app-status-bar" content="#32E14C">
+  <meta name="theme-color" content="#32E14C">
+</head>
+
+<body class="grey lighten-4">
+  <!-- top nav -->
+  <nav class="z-depth-0">
+    <div class="nav-wrapper container">
+      <a href="/">Smart<span>Hyco</span></a>
+      <span class="right grey-text text-darken-1">
+        <i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
+      </span>
+    </div>
+  </nav>
+
+  <!-- side nav -->
+  <ul id="side-menu" class="sidenav side-menu">
+    <li><a class="subheader">SMART HYCO</a></li>
+    <li><a href="/" class="waves-effect">Home</a></li>
+    <li><a href="/pages/about.html" class="waves-effect">About</a></li>
+    <li><div class="divider"></div></li>
+    <li><a href="/pages/contact.html" class="waves-effect">
+      <i class="material-icons">mail_outline</i>Contact</a>
+    </li>
+  </ul>
+
+  <!-- content -->
+  <!-- <div class="container grey-text">
+    <h5 class="center">About Smart Hyco</h5>
+    <p>Ducimus, porro voluptatum illum veniam eaque sunt sit labore provident eligendi! Voluptate amet suscipit inventore unde maxime atque impedit officia nobis laboriosam!</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam voluptatibus omnis, ea doloremque exercitationem id necessitatibus. Voluptatem officiis cupiditate commodi totam, hic laborum est ducimus amet iure, non dignissimos illo.</p>
+  </div> -->
+
+
+  <!-- recipes -->
+  <div class="graph container grey-text text-darken-1">
+      
+  </div>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-firestore.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyC92wsNXa72j8nWCKLkXWQW71d1P5d7PQ4",
+      authDomain: "smarthyco-ad037.firebaseapp.com",
+      databaseURL: "https://smarthyco-ad037.firebaseio.com",
+      projectId: "smarthyco-ad037",
+      storageBucket: "smarthyco-ad037.appspot.com",
+      messagingSenderId: "230468958096",
+      appId: "1:230468958096:web:5456a771a89ef2b52f2515",
+      measurementId: "G-QXEJ18CP1J"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const dbAbout = firebase.firestore();
+
+
+  // real-time listener
+  dbAbout.collection('hycomate-1').orderBy("waktu").limit(5).onSnapshot(snapshot => {
+    snapshot.docChanges().forEach(change => {
+      if(change.type === 'added') {
+          console.log("added");
+          renderGraph(
+            change.doc.data(), change.doc.id
+          );
+      }
+      if(change.type === 'removed') {
+        // remove the document data from the web page
+        // removeRecipe(change.doc.id);
+      }
+    });
+  });
+
+  const graphs = document.querySelector('.graph');
+
+  // render recipe data
+  const renderGraph = (data, id) => {
+  const htmlAbout = `
+    <div class="card-panel recipe white row" data-id="${id}">
+      <img src="/img/plant.png" alt="recipe thumb">
+      <div class="recipe-details">
+        <div class="recipe-title">Data logging</div>
+        <div class="recipe-ingredients">Humidity: ${data.data_humidity}, PPM: ${data.data_ppm}, pH: ${data.data_ph}, Temp: ${data.data_air_temp} | ${data.data_water_temp} </div>
+        <div class="recipe-ingredients">${data.waktu.toDate()}</div>
+      </div>
+      <div class="recipe-delete">
+        <i class="material-icons" data-id="${id}">delete_outline</i>
+      </div>
+    </div>
+  `;
+  graphs.innerHTML += htmlAbout;
+
+  };
+
+  </script>
+
+  <script src="/js/app.js"></script>
+  <!-- <script src="/js/ui.js"></script> -->
+</body>
+</html>
